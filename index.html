@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Quiz 💖</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400&display=swap');
+        
+        body {
+            background: linear-gradient(to bottom, #ffccdc, #ff99c8, #ff66a3);
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #ff0055;
+        }
+        
+        #quiz-container {
+            background: white;
+            width: 350px;
+            height: 350px;
+            position: relative;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            border-radius: 10px;
+        }
+        
+        .question-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        button {
+            background: #ff0055;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #e6004c;
+        }
+        
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 20px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            from { transform: translateY(-100vh) translateX(0); opacity: 1; }
+            to { transform: translateY(100vh) translateX(20px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <audio id="background-music" loop autoplay>
+        <source src="love.mp3" type="audio/mp3">
+    </audio>
+
+    <h1>Will You Be My Valentine? ❤️</h1>
+    <div id="quiz-container">
+        <div class="question-image" id="question-image"></div>
+        <h2 id="question">Loading...</h2>
+        <div id="options"></div>
+    </div>
+    
+    <script>
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.innerHTML = "❤️";
+            heart.classList.add("heart");
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = "-10px";
+            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 300);
+        
+        const questions = [
+            {
+                question: "What’s our anniversary date?",
+                options: ["12th February", "10th March", "25th July", "1st January"],
+                answer: "25th July",
+                image: "images/IMG_3361.jpeg"
+            },
+            {
+                question: "Where did we meet?",
+                options: ["Cinema", "Beach", "Tinder", "Park"],
+                answer: "Tinder",
+                image: "images/IMG_3268.jpeg"
+            },
+            {
+                question: "What’s my favorite thing about you?",
+                options: ["Your Smile", "Your Hugs", "Your Laugh", "Everything"],
+                answer: "Everything",
+                image: "images/IMG_1813.jpeg"
+            }
+        ];
+
+        let currentQuestion = 0;
+
+        function displayQuestion() {
+            const quizContainer = document.getElementById("quiz-container");
+            const questionText = document.getElementById("question");
+            const optionsContainer = document.getElementById("options");
+            const imageContainer = document.getElementById("question-image");
+
+            const q = questions[currentQuestion];
+            questionText.innerText = q.question;
+            imageContainer.style.backgroundImage = `url('${q.image}')`;
+            optionsContainer.innerHTML = "";
+
+            q.options.forEach(option => {
+                const button = document.createElement("button");
+                button.innerText = option;
+                button.onclick = () => checkAnswer(option);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selected) {
+            if (selected === questions[currentQuestion].answer) {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    displayQuestion();
+                } else {
+                    showInvitation();
+                }
+            } else {
+                alert("Oops! Try again ❤️");
+            }
+        }
+
+        function showInvitation() {
+            document.getElementById("quiz-container").innerHTML = `
+                <h2>Congratulations, my love! 🎉</h2>
+                <p>You got all the answers right! Now, let's celebrate with a special date. 💕</p>
+                <img src="images/ella.jpeg" style="width: 100%; border-radius: 10px;">
+                <h3>See you soon! 💖</h3>
+            `;
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>
+
+
+
